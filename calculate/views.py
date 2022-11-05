@@ -1,27 +1,15 @@
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from .calculator import Calculator
+
 
 add_words = ['+', 'add', 'addition']
 sub_words = ['-', 'subtract', 'minus', 'takeaway', 'subtraction']
 div_words = ['/', 'divide', 'division']
 mult_words = ['*', 'multiply', 'multiplication']
-
-class Calculator():
-    def add(x, y):
-        return x + y
-
-    def subtract(x, y):
-        return x - y
-
-    def multiply(x, y):
-        return x * y
-
-    def divide(x, y):
-        return x / y
 
 class CalculateView(APIView):
     def post(self, request, *args, **kwargs):
@@ -38,15 +26,18 @@ class CalculateView(APIView):
             if op in add_words:
                 op_type = op
                 result = Calculator.add(x, y)
-            if op in sub_words:
+            elif op in sub_words:
                 op_type = op
                 result = Calculator.subtract(x, y)
-            if op in div_words:
+            elif op in div_words:
                 op_type = op
                 result = Calculator.divide(x, y)
-            if op in mult_words:
+            elif op in mult_words:
                 op_type = op
                 result = Calculator.multiply(x, y)
+            else:
+                message = {"message": "Invalid Operation Type"}
+                return JsonResponse(message, status=status.HTTP_400_BAD_REQUEST)
 
         res = {
             "slackUsername": "Rougue_Astronaut",
