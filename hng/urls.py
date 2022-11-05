@@ -20,5 +20,5 @@ import calculate.urls as calculate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('calculate/', include(calculate))
+    path('', include(calculate))
 ]
